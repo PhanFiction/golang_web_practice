@@ -1,10 +1,22 @@
 package handlers
 
 import (
-	"fmt"
+	"goweb_exercise/types"
+	"html/template"
 	"net/http"
 )
 
 func AboutHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "This is the About Page.")
+	tmpl := template.Must(template.New("layout.html").
+		ParseFiles(
+			"templates/layout.html",
+			"templates/about.html",
+		))
+
+	data := types.PageData{
+		TabTitle:  "About Page",
+		PageTitle: "About",
+	}
+
+	tmpl.ExecuteTemplate(w, "layout.html", data)
 }
