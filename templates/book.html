@@ -1,4 +1,6 @@
+{{define "content"}}
 <h1>Welcome to my website!</h1>
-<p>Title is %s </p>
-<p>Page is %s</p>
+<p>Title is {{.PageTitle}} </p>
+<p>Page is {{.BookPage}}</p>
 <img src="/static/img.jpeg" alt="A cute cat" style="max-width: 300px;" />
+{{end}}
