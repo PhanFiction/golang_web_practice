@@ -5,3 +5,13 @@ type PageData struct {
 	TabTitle  string
 	BookPage  int
 }
+
+type BookData struct {
+	Title       string
+	Author      string
+	Pages       int
+	Publisher   string
+	ISBN        string
+	Description string
+	PublishedAt string
+}
