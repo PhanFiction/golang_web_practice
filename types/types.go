@@ -6,7 +6,7 @@ type PageData struct {
 	BookPage  int
 }
 
-type BookData struct {
+type BookDetails struct {
 	Title       string
 	Author      string
 	Pages       int
