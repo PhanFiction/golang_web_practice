@@ -1,0 +1,30 @@
+<!-- forms.html -->
+{{if .Success}}
+    <h1>Thanks for your book!</h1>
+{{else}}
+    <h1>Book</h1>
+    <form method="POST" action="/create-book">
+      <label>Title:</label><br />
+      <input type="text" name="title"><br />
+  
+      <label>Author:</label><br />
+      <input type="text" name="author"><br />
+  
+      <label>Pages:</label><br />
+      <input type="number" name="pages"><br />
+  
+      <label>Publisher:</label><br />
+      <input type="text" name="publisher"><br />
+  
+      <label>ISBN:</label><br />
+      <input type="text" name="isbn"><br />
+  
+      <label>Description:</label><br />
+      <textarea name="description"></textarea><br />
+  
+      <label>Published At:</label><br />
+      <input type="text" name="publishedAt"><br />
+  
+      <input type="submit" value="Submit">
+    </form>
+{{end}}
