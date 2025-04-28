@@ -1,13 +1,27 @@
 package middleware
 
 import (
+	"goweb_exercise/types"
 	"log"
 	"net/http"
+	"time"
 )
 
-func Logger(f http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.URL.Path)
-		f(w, r)
+// Logging logs all requests with its path and the time it took to process
+func Logging() types.Middleware {
+
+	// Create a new Middleware
+	return func(f http.HandlerFunc) http.HandlerFunc {
+
+		// Define the http.HandlerFunc
+		return func(w http.ResponseWriter, r *http.Request) {
+
+			// Do middleware things
+			start := time.Now()
+			defer func() { log.Println(r.URL.Path, time.Since(start)) }()
+
+			// Call the next middleware/handler in chain
+			f(w, r)
+		}
 	}
 }
