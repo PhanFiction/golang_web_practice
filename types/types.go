@@ -1,5 +1,7 @@
 package types
 
+import "net/http"
+
 type PageData struct {
 	PageTitle string
 	TabTitle  string
@@ -15,3 +17,6 @@ type BookDetails struct {
 	Description string
 	PublishedAt string
 }
+
+// Type function that takes an http.HandlerFunc and returns another http.HandlerFunc.
+type Middleware func(http.HandlerFunc) http.HandlerFunc
