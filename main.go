@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goweb_exercise/routes"
+	"goweb_exercise/internal/routes"
 	"net/http"
 
 	"github.com/gorilla/mux"
