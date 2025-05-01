@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"goweb_exercise/internal/session"
 	"goweb_exercise/internal/types"
 	"html/template"
 	"net/http"
@@ -19,6 +20,7 @@ func BookPageHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.New("layout.html").
 		ParseFiles(
 			"templates/layout.html",
+			"templates/nav.html",
 			"templates/book.html",
 			"templates/book_form.html",
 		))
@@ -34,10 +36,15 @@ func BookPageHandler(w http.ResponseWriter, r *http.Request) {
 		pageNumber = 1
 	}
 
+	// Fetch user
+	session, _ := session.Store.Get(r, "session")
+	auth, ok := session.Values["authenticated"].(bool)
+
 	data := types.PageData{
-		TabTitle:  "Book Page",
-		PageTitle: title,
-		BookPage:  pageNumber,
+		TabTitle:      "Book Page",
+		PageTitle:     title,
+		BookPage:      pageNumber,
+		Authenticated: ok && auth,
 	}
 
 	tmpl.ExecuteTemplate(w, "layout.html", data)
