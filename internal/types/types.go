@@ -3,9 +3,11 @@ package types
 import "net/http"
 
 type PageData struct {
-	PageTitle string
-	TabTitle  string
-	BookPage  int
+	PageTitle     string
+	TabTitle      string
+	BookPage      int
+	Username      string
+	Authenticated bool
 }
 
 type BookDetails struct {
