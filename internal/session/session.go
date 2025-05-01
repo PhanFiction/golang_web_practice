@@ -8,14 +8,12 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-var (
-	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	key   = []byte("super-secret-key")
-	store = sessions.NewCookieStore(key)
-)
+// Global var to be used
+// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+var Store = sessions.NewCookieStore([]byte("super-secret-key"))
 
 func SecretHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
+	session, _ := Store.Get(r, "session")
 
 	// Check if user is authenticated
 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
@@ -32,6 +30,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		tmpl := template.Must(template.New("layout.html").
 			ParseFiles(
 				"templates/layout.html",
+				"templates/nav.html",
 				"templates/login.html",
 			))
 
@@ -43,7 +42,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	if username == "admin" && password == "password" {
-		session, _ := store.Get(r, "session")
+		session, _ := Store.Get(r, "session")
 		// Authentication goes here
 		// Set user as authenticated
 		session.Values["authenticated"] = true
@@ -56,10 +55,23 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "session")
+	session, _ := Store.Get(r, "session")
 
 	// Revoke users authentication
 	session.Values["authenticated"] = false
 	session.Save(r, w)
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
+// Middleware to check if user is authenticated
+func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := Store.Get(r, "session")
+		auth, ok := session.Values["authenticated"].(bool)
+		if !ok || !auth {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+		next(w, r)
+	}
 }
