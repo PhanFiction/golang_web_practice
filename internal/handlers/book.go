@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"goweb_exercise/internal/session"
 	"goweb_exercise/internal/types"
@@ -17,13 +18,13 @@ type BookPageData struct {
 }
 
 func BookPageHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.New("layout.html").
-		ParseFiles(
-			"templates/layout.html",
-			"templates/nav.html",
-			"templates/book.html",
-			"templates/book_form.html",
-		))
+	// tmpl := template.Must(template.New("layout.html").
+	// 	ParseFiles(
+	// 		"templates/layout.html",
+	// 		"templates/nav.html",
+	// 		"templates/book.html",
+	// 		"templates/book_form.html",
+	// 	))
 
 	vars := mux.Vars(r)
 	title := vars["title"]
@@ -47,7 +48,9 @@ func BookPageHandler(w http.ResponseWriter, r *http.Request) {
 		Authenticated: ok && auth,
 	}
 
-	tmpl.ExecuteTemplate(w, "layout.html", data)
+	json.NewEncoder(w).Encode(data)
+
+	// tmpl.ExecuteTemplate(w, "layout.html", data)
 }
 
 func CreateBookHandler(w http.ResponseWriter, r *http.Request) {
