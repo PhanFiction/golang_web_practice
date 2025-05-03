@@ -15,6 +15,7 @@ func Logging() types.Middleware {
 
 		// Define the http.HandlerFunc
 		return func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json") // set to return JSON data
 
 			// Do middleware things
 			start := time.Now()                                           // Get date
